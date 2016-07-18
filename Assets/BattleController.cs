@@ -29,8 +29,8 @@ public class BattleController : MonoBehaviour {
 
 
 	//action flags
-	bool canMove;
-	bool canAction;
+	static bool canMove;
+	static bool canAction;
 
 
 	//components
@@ -173,7 +173,7 @@ public class BattleController : MonoBehaviour {
 						break;
 						
 					case attack:
-						
+						attackMode();
 						break;
 						
 					case skill:
@@ -190,6 +190,7 @@ public class BattleController : MonoBehaviour {
 					}
 				}
 			}else if(turnState == TURNSTATE.MOVE){
+				//移動コマンド中
 
 				if(GameKeyInput.decide == 1){
 					Vector2 p = cur.getSelectedPosition();
@@ -218,6 +219,9 @@ public class BattleController : MonoBehaviour {
 					cur.cursorMove (1,0);
 				}
 
+			}else if(turnState == TURNSTATE.ATTACK){
+				//通常攻撃モード
+
 			}
 
 
@@ -234,12 +238,17 @@ public class BattleController : MonoBehaviour {
 	 * start MoveMode
 	 */
 	void modeMove(){
+		if (canMove == false) {
+			return;
+		}
 		cur.visibleCursor (true);
 		cur.cursorMoveTo ((int)this.ctrlUnitPos.x, (int)this.ctrlUnitPos.z);
 		turnState = TURNSTATE.MOVE;
 		bool[,] flags = map.getMoveablePositions ((int)this.ctrlUnitPos.x, (int)this.ctrlUnitPos.z, ctrlUnitMove, 1);
 		cur.showHighlights (flags);
-		cmd.setVisible (false);
+		if (this.movedDist > 0) {
+			cmd.setVisible (false);
+		}
 	}
 
 	/**
@@ -250,6 +259,26 @@ public class BattleController : MonoBehaviour {
 		cur.visibleCursor (false);
 		turnState = TURNSTATE.MENU;
 		cmd.setVisible (true);
+		canMove = false;
+	}
+
+	/**
+	 * start AttackMode
+	 */
+	void attackMode(){
+		if (canAction == false) {
+			return;
+		}
+		cur.visibleCursor (true);
+		cur.cursorMoveTo ((int)this.ctrlUnitPos.x, (int)this.ctrlUnitPos.z);
+		turnState = TURNSTATE.ATTACK;
+	}
+
+	/**
+	 * finish AttackMode
+	 */
+	void finAttackMode(){
+
 	}
 
 	/**
@@ -258,7 +287,15 @@ public class BattleController : MonoBehaviour {
 	 */
 	void finishTurn(){
 		//行動後のユニットがどれだけのWT値を得るか
-		int giveWT = units [controlUnitId].GetComponent<UnitStatus>().calcWT (100);
+		float wtp = 50.0f;
+		if (canMove == false) {
+			wtp += 15.0f + 10.0f * ((float)movedDist / this.ctrlUnitMove);
+		}
+		if (canAction == false) {
+			wtp += 25.0f;
+		}
+		Debug.Log ("BattleController finishTurn wtp->" + wtp);
+		int giveWT = units [controlUnitId].GetComponent<UnitStatus>().calcWT (wtp);
 
 		movedDist = 0;
 

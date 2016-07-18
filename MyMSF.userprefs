@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\BattleController.cs">
+    <Files>
+      <File FileName="Assets\BattleController.cs" Line="226" Column="1" />
+      <File FileName="Assets\CommandController.cs" Line="19" Column="36" />
+      <File FileName="Assets\CursorController.cs" Line="19" Column="23" />
+      <File FileName="Assets\GameKeyInput.cs" Line="57" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
