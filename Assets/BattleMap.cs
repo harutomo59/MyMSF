@@ -101,12 +101,56 @@ public class BattleMap{
 
 	/**
 	 * 移動できる座標を取得する
+	 * 
+	 * 現在は障害物等を考えずに距離だけです
 	 */
 	public bool[,] getMoveablePositions(int myX, int myZ, int dist, int team){
 		bool[,] result = new bool[sx, sz];
 		for (int i=0; i<sx; i++) {
 			for(int j=0; j<sz; j++){
 				if((getMass2D (myX, myZ, i, j) <= dist && this.canStand[i,j] == true)){
+					result[i,j] = true;
+				}else{
+					result[i,j] = false;
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * 対象指定できる位置を取得する（ターゲット指定）
+	 * 敵味方区別なく指定できる
+	 * myselfをtrueにすると自分自身も指定できる
+	 * 
+	 * 現在は障害物等を考えずに距離だけです
+	 */
+	public bool[,] getTarget(int myX, int myZ, int dist, bool myself){
+		bool[,] result = new bool[sx, sz];
+		for (int i=0; i<sx; i++) {
+			for(int j=0; j<sz; j++){
+				if((getMass2D (myX, myZ, i, j) <= dist && this.unit[i,j] >= 0)){
+					result[i,j] = true;
+				}else{
+					result[i,j] = false;
+				}
+			}
+		}
+		result [myX, myZ] = false;
+		return result;
+	}
+
+	/**
+	 * 指定できる位置を取得する（位置指定）
+	 * 障害物等の位置も指定できる
+	 * 
+	 * 現在は高さを考慮せずに距離だけです
+	 */
+	public bool[,] getTargetGround(int myX, int myZ, int dist){
+		bool[,] result = new bool[sx, sz];
+		for (int i=0; i<sx; i++) {
+			for(int j=0; j<sz; j++){
+				if((getMass2D (myX, myZ, i, j) <= dist)){
 					result[i,j] = true;
 				}else{
 					result[i,j] = false;

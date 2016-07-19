@@ -198,12 +198,18 @@ public class BattleController : MonoBehaviour {
 					movedDist = map.getMass2D (p, new Vector2(ctrlUnitPos.x, ctrlUnitPos.z));
 				
 					uniact.UnitMoveTo((int) p.x, (int) p.y);
+					map.moveUnit (this.controlUnitId,(int) p.x, (int) p.y);
+					ctrlUnitPos = new Vector3(p.x, ctrlUnitPos.y, p.y);
 
-					finMoveMode();
+					if(movedDist > 0){
+						finMoveMode(false);
+					}else{
+						finMoveMode (true);
+					}
 				}
 
 				if(GameKeyInput.cancel == 1){
-					finMoveMode ();
+					finMoveMode (true);
 				}
 
 				if(GameKeyInput.up == 1){
@@ -222,6 +228,31 @@ public class BattleController : MonoBehaviour {
 			}else if(turnState == TURNSTATE.ATTACK){
 				//通常攻撃モード
 
+				if(GameKeyInput.decide == 1){
+					Vector2 p = cur.getSelectedPosition();
+					int targetId = map.getUnitId((int)p.x, (int)p.y);
+					//攻撃処理
+
+					Debug.Log("BattleController update attack AttackTo" + targetId);
+
+					finAttackMode (false);
+				}
+				if(GameKeyInput.cancel == 1){
+					finMoveMode (true);
+				}
+				
+				if(GameKeyInput.up == 1){
+					cur.cursorMove (0,1);
+				}
+				if(GameKeyInput.down == 1){
+					cur.cursorMove (0,-1);
+				}
+				if(GameKeyInput.left == 1){
+					cur.cursorMove (-1,0);
+				}
+				if(GameKeyInput.right == 1){
+					cur.cursorMove (1,0);
+				}
 			}
 
 
@@ -235,31 +266,49 @@ public class BattleController : MonoBehaviour {
 	}
 
 	/**
+	 * マップにハイライトを表示させるモードの開始
+	 */
+	private void startMapTarget(bool[,] highlights){
+		cur.visibleCursor (true);
+		cur.cursorMoveTo ((int)this.ctrlUnitPos.x, (int)this.ctrlUnitPos.z);
+		cur.showHighlights (highlights);
+		cmd.setVisible (false);
+	}
+
+	/**
+	 * マップにハイライトを表示させるモードの終了
+	 * 引数は次に移行するturnState
+	 */
+	private void finMapTarget(TURNSTATE state){
+		cur.deleteHighlights ();
+		cur.visibleCursor (false);
+		turnState = state;
+		cmd.setVisible (true);
+	}
+
+	/**
 	 * start MoveMode
 	 */
 	void modeMove(){
 		if (canMove == false) {
 			return;
 		}
-		cur.visibleCursor (true);
-		cur.cursorMoveTo ((int)this.ctrlUnitPos.x, (int)this.ctrlUnitPos.z);
 		turnState = TURNSTATE.MOVE;
 		bool[,] flags = map.getMoveablePositions ((int)this.ctrlUnitPos.x, (int)this.ctrlUnitPos.z, ctrlUnitMove, 1);
-		cur.showHighlights (flags);
+		this.startMapTarget (flags);
 		if (this.movedDist > 0) {
-			cmd.setVisible (false);
+		
 		}
 	}
 
 	/**
 	 * finish MoveMode
+	 * if flag is FALSE, action of move is done.
 	 */
-	void finMoveMode(){
-		cur.deleteHighlights ();
-		cur.visibleCursor (false);
-		turnState = TURNSTATE.MENU;
-		cmd.setVisible (true);
-		canMove = false;
+	void finMoveMode(bool flag){
+		//this.finMapTarget (TURNSTATE.MOVING);
+		this.finMapTarget (TURNSTATE.MENU);
+		canMove = flag;
 	}
 
 	/**
@@ -269,16 +318,21 @@ public class BattleController : MonoBehaviour {
 		if (canAction == false) {
 			return;
 		}
-		cur.visibleCursor (true);
-		cur.cursorMoveTo ((int)this.ctrlUnitPos.x, (int)this.ctrlUnitPos.z);
 		turnState = TURNSTATE.ATTACK;
+		int range = 1; //攻撃射程の取得
+		bool[,] flags = map.getTarget ((int)this.ctrlUnitPos.x, (int)this.ctrlUnitPos.z, range, false);
+		this.startMapTarget (flags);
 	}
 
 	/**
 	 * finish AttackMode
+	 * アクションが完了したならflagはFALSEに,
+	 * キャンセルされたならflagはTRUEに.
 	 */
-	void finAttackMode(){
-
+	void finAttackMode(bool flag){
+		//this.finMapTarget (TURNSTATE.ATTACKING);
+		this.finMapTarget (TURNSTATE.MENU);
+		canAction = flag;
 	}
 
 	/**
