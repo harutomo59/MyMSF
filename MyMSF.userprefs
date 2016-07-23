@@ -1,15 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Weapon.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\Unity_shooting\Assets\Scenes\Staffroll\deleteShot.cs">
     <Files>
-      <File FileName="Assets\BattleController.cs" Line="260" Column="33" />
-      <File FileName="Assets\CommandController.cs" Line="1" Column="1" />
-      <File FileName="Assets\CursorController.cs" Line="1" Column="1" />
-      <File FileName="Assets\BattleMap.cs" Line="1" Column="1" />
-      <File FileName="Assets\UnitAction.cs" Line="1" Column="1" />
-      <File FileName="Assets\UnitStatus.cs" Line="26" Column="1" />
-      <File FileName="Assets\Weapon.cs" Line="9" Column="14" />
-      <File FileName="..\Unity_shooting\Assets\Scenes\Staffroll\OriginalBullet.cs" Line="16" Column="17" />
+      <File FileName="..\Unity_shooting\Assets\Scenes\Staffroll\deleteShot.cs" Line="27" Column="28" />
+      <File FileName="..\Unity_shooting\Assets\Scenes\Game_Stage1\Script\theShot.cs" Line="1" Column="1" />
+      <File FileName="..\Unity_shooting\Assets\Scenes\Staffroll\shotgunCreater.cs" Line="40" Column="37" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

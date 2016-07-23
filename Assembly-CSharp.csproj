@@ -52,7 +52,9 @@
      <Compile Include="Assets\BattleMap.cs" />
      <Compile Include="Assets\CommandController.cs" />
      <Compile Include="Assets\CursorController.cs" />
+     <Compile Include="Assets\EquipmentItem.cs" />
      <Compile Include="Assets\GameKeyInput.cs" />
+     <Compile Include="Assets\Item.cs" />
      <Compile Include="Assets\UnitAction.cs" />
      <Compile Include="Assets\UnitStatus.cs" />
      <Compile Include="Assets\Weapon.cs" />

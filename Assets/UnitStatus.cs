@@ -24,12 +24,18 @@ public class UnitStatus : MonoBehaviour {
 
 	string state = "normal";
 
+	Weapon mainWeaponR;
+	Weapon mainWeaponL;
+	Weapon subWeaponR;
+	Weapon subWeaponL;
+
 
 	// Use this for initialization
 	void Start () {
 		WT = WTmax;
 		HP = HPmax;
 		MP = 0;
+		
 	}
 	
 	// Update is called once per frame
