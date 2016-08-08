@@ -38,6 +38,7 @@ public class BattleController : MonoBehaviour {
 	GameKeyInput key;
 	CursorController cur;
 	UnitAction uniact;  //component of controlling unit's
+	UnitStatus unista;
 
 	//commands
 	const int move = 0;
@@ -146,9 +147,10 @@ public class BattleController : MonoBehaviour {
 
 					//操作キャラの情報を引き出しておきたい
 					uniact = units[controlUnitId].GetComponent<UnitAction>();
+					unista = units[controlUnitId].GetComponent<UnitStatus>();
 					ctrlUnitPos = uniact.getNowPos ();
-					//ctrlUnitMove= units[controlUnitId].GetComponent<UnitStatus>().
-					ctrlUnitMove = 5;
+					ctrlUnitMove= unista.getMove ();
+					//ctrlUnitMove = 5;
 
 					//コマンドの可視化
 					cmd.setVisible (true);
@@ -319,7 +321,8 @@ public class BattleController : MonoBehaviour {
 			return;
 		}
 		turnState = TURNSTATE.ATTACK;
-		int range = 1; //攻撃射程の取得
+		//int range = 1; //攻撃射程の取得
+		int range = unista.getWeaponRange ();
 		bool[,] flags = map.getTarget ((int)this.ctrlUnitPos.x, (int)this.ctrlUnitPos.z, range, false);
 		this.startMapTarget (flags);
 	}

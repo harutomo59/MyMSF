@@ -24,10 +24,18 @@ public class UnitStatus : MonoBehaviour {
 
 	string state = "normal";
 
+	//Weapons
 	Weapon mainWeaponR;
 	Weapon mainWeaponL;
 	Weapon subWeaponR;
 	Weapon subWeaponL;
+
+
+	//パラメータ（キャラクターの素）
+
+
+
+	//パラメータ（装備等加わった値）
 
 
 	// Use this for initialization
@@ -35,12 +43,32 @@ public class UnitStatus : MonoBehaviour {
 		WT = WTmax;
 		HP = HPmax;
 		MP = 0;
-		
+
+
+		mainWeaponR = new Weapon ();
+		mainWeaponL = new Weapon ();
+		subWeaponR = new Weapon ();
+		subWeaponL = new Weapon ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void swapWeapon(){
+		Weapon tmp;
+		tmp = mainWeaponR;
+		mainWeaponR = subWeaponR;
+		subWeaponR = tmp;
+
+		tmp = mainWeaponL;
+		mainWeaponL = subWeaponL;
+		subWeaponL = tmp;
+	}
+
+	public int getWeaponRange(){
+		return mainWeaponR.getRange ();
 	}
 
 	public int getHP(){
@@ -155,4 +183,12 @@ public class UnitStatus : MonoBehaviour {
 	public void reduceMP(int value){
 		this.MP -= value;
 	}
+
+	/**
+	 * 移動力を取得する
+	 */
+	public int getMove(){
+		return this.move;
+	}
+
 }
